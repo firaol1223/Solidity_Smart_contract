@@ -1,0 +1,56 @@
+Unsigned Integers
+What the heck is an unsigned integer? 
+
+First, let's go over integers. Integers include all positive and negative numbers without fractions. The numbers -2,-1,0,1,2 are all 
+integers. This range continues in both the positive and negative direction as far as you can count!
+To determine if the number is above or below zero we use the sign: + or -. An unsigned integer is an integer that has no sign. 
+Solidity has a specific data type for unsigned integers called uint. A uint can be suffixed with the number of bits reserved for it.
+For instance uint8 means that there are eight bits provided for the value of the variable.
+What is the range of unsigned integers in eight bits? Eight bits can range from 00000000 to 11111111. This range can represent 256 unique values.
+Since the range of unsigned integer values does not include negative numbers, it is simply 0 to 255. In decimal, the unsigned value of
+00000000 is 0 and the value of 11111111 is 255. So, the max value a uint8 can store is 255. You can calculate the max value of a uint by 
+doing (2 ^ n) - 1, where n is the number of bits it can use to store the value.
+
+Accounts 
+In Ethereum, accounts are often distinguished into two types: Externally Owned Accounts and Contract Accounts. The differences between these
+accounts is largely conceptual as the EVM essentially treats them the same!Every account on the EVM has a public address and a balance. 
+Contract accounts will also store their bytecode as well as their internal storage data.When making a call from an EOA to a Contract Account
+it's important to know things like who is making the call, how much ether they are sending and the function they are intending to invoke 
+with which arguments.The Solidity language handles the wiring up of the transaction data to the function we have defined on the contract. 
+The language also gives us access to the transaction parameters through globals like msg.sender and msg.value.By providing these utilities 
+for working with accounts we can easily define roles, permissions and track token balances in contracts. Let's learn all about working with 
+accounts in Solidity!
+
+Solidity Addresses
+Let's talk about the address data type in Solidity!
+An address on the EVM is a 160 bits long, or a 40 character, hexadecimal string:
+address a = 0xc783df8a850f42e7f7e57013759c285caa701eb6;
+ This is valid Solidity! We can store a fixed address in our contracts if we need to.
+
+Receive Function
+In the latest versions of Solidity, contracts cannot receive ether by default.In order to receive ether, a contract must specify
+a payable function. This is another keyword which affects the function's mutability similar to view and pure.
+
+Transferring Funds
+We can make any regular function payable. This allows us to differentiate the purpose of the ether coming into the smart contract.
+
+Self Destruct
+Contracts can destroy themselves by using the SELFDESTRUCT opcode on the EVM! This opcode actually refunds ether in order to incentivize 
+cleaning up the blockchain of unused contracts.
+
+Reverting Transactions
+
+In the EVM the main opcode to revert a transaction is REVERT. There are three ways to invoke the REVERT opcode from Solidity are assert, 
+require and revert. We'll focus on the last two for now (see this stage's details section for more on assert).
+We can revert a transaction in Solidity by using the require function and the revert statement.
+A require statement has two forms:
+
+1. require(someBooleanCondition);
+2. require(someBooleanCondition, "Optional error message");
+☝️ These will revert if someBooleanCondition is false. We can use these to check for all kinds of conditions.
+
+The revert keyword also has two forms:
+1. // old syntax to revert with a string
+2. revert("Some error message");
+3. // new syntax to revert with a custom error
+4. revert SomeCustomError(arg1, arg2, ...);
